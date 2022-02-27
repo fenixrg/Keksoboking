@@ -50,14 +50,21 @@ const PHOTOS = [
 
 //Основная Функция - Генерация массива из 10 объектов - объявлений
 const createAds = (array) => {
-    for (let i = 0; i < ADS; i++) {
+    for (let i = 1; i <= ADS; i++) {
+        let x = getRandomIntegerPoint(35.65000, 35.70000, 5);
+        let y = getRandomIntegerPoint(139.70000, 139.80000, 5);
         array.push({
             author: {
-                avatar: 'img/avatars/user' + '0' + (i + 1) + '.png',
+                avatar: i > 9 ? 'img/avatars/user' + i +
+                    '.png' : 'img/avatars/user' + '0' + i + '.png',
+            },
+            location: {
+                x: x,
+                y: y,
             },
             offer: {
                 title: 'Новое объявление неподалёку от вас',
-                address: '(array[i].location.x) (array[i].location.y)',
+                address: 'x=' + x + ' y=' + y,
                 price: getRandomInteger(5000, 37000),
                 type: getRandomElementArr(TYPE),
                 rooms: getRandomInteger(1, 7),
@@ -68,10 +75,6 @@ const createAds = (array) => {
                 description: getRandomElementArr(DESCRIPTION),
                 photos: getRandomStrongArray(PHOTOS),
             },
-            location: {
-                x: getRandomIntegerPoint(35.65000, 35.70000, 5),
-                y: getRandomIntegerPoint(139.70000, 139.80000, 5),
-            }
         })
     }
 };
