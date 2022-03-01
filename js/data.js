@@ -47,36 +47,46 @@ const PHOTOS = [
     "http://o0.github.io/assets/images/tokyo/hotel2.jpg",
     "http://o0.github.io/assets/images/tokyo/hotel3.jpg",
 ];
+const AVATARS = [];
+
+for (let i = 1; i <= ADS; i++) {
+    AVATARS[i - 1] = i > 9 ? 'img/avatars/user' + i +
+        '.png' : 'img/avatars/user' + '0' + i + '.png';
+
+}
+
+console.log(AVATARS);
 
 //Основная Функция - Генерация массива из 10 объектов - объявлений
 const createAds = (array) => {
-    for (let i = 1; i <= ADS; i++) {
-        let x = getRandomIntegerPoint(35.65000, 35.70000, 5);
-        let y = getRandomIntegerPoint(139.70000, 139.80000, 5);
-        array.push({
-            author: {
-                avatar: i > 9 ? 'img/avatars/user' + i +
-                    '.png' : 'img/avatars/user' + '0' + i + '.png',
-            },
-            location: {
-                x: x,
-                y: y,
-            },
-            offer: {
-                title: 'Новое объявление неподалёку от вас',
-                address: 'x=' + x + ' y=' + y,
-                price: getRandomInteger(5000, 37000),
-                type: getRandomElementArr(TYPE),
-                rooms: getRandomInteger(1, 7),
-                guests: getRandomInteger(1, 12),
-                checkin: getRandomElementArr(CHECKIN),
-                checkout: getRandomElementArr(CHECKOUT),
-                features: getRandomStrongArray(FEATURES),
-                description: getRandomElementArr(DESCRIPTION),
-                photos: getRandomStrongArray(PHOTOS),
-            },
-        })
-    }
+    let x = getRandomIntegerPoint(35.65000, 35.70000, 5);
+    let y = getRandomIntegerPoint(139.70000, 139.80000, 5);
+    array.push({
+        author: {
+            avatar: getRandomElementArr(AVATARS),
+        },
+        location: {
+            x: x,
+            y: y,
+        },
+        offer: {
+            title: 'Новое объявление неподалёку от вас',
+            address: 'x=' + x + ',' + ' y=' + y,
+            price: getRandomInteger(5000, 37000),
+            type: getRandomElementArr(TYPE),
+            rooms: getRandomInteger(1, 7),
+            guests: getRandomInteger(1, 12),
+            checkin: getRandomElementArr(CHECKIN),
+            checkout: getRandomElementArr(CHECKOUT),
+            features: getRandomStrongArray(FEATURES),
+            description: getRandomElementArr(DESCRIPTION),
+            photos: getRandomStrongArray(PHOTOS),
+        },
+    })
 };
 
-export { createAds, generateAds }
+for (let i = 0; i < ADS; i++) {
+    createAds(generateAds);
+}
+
+export { generateAds }

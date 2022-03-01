@@ -20,7 +20,7 @@ const getRandomIntegerPoint = (min, max, number) => {
     return ((Math.random() * (max - min)) + min).toFixed(number);
 }
 
-//Функция №3 - Получение рандомного элента массива
+//Функция №3 - Получение рандомного элемента массива
 const getRandomElementArr = (array) => {
     let randomElement = getRandomInteger(0, array.length - 1);
     return array[randomElement];
@@ -43,4 +43,4 @@ function getRandomStrongArray(arr) {
     return array;
 }
 
-export { getRandomInteger, getRandomIntegerPoint, getRandomElementArr, getRandomStrongArray }
+export { getRandomInteger, getRandomIntegerPoint, getRandomElementArr, getRandomStrongArray };
