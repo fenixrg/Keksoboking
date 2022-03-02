@@ -1,5 +1,5 @@
 import { generateAds } from './data.js';
-console.log(JSON.stringify(generateAds));
+// console.log(JSON.stringify(generateAds));
 
 // Константы
 const template = document.querySelector('#card').content;
@@ -23,18 +23,18 @@ const createElement = function(tagName, className1, className2) {
 
 
 generateAds.forEach((ads) => {
-    var newAds = templateAds.cloneNode(true);
-    var titleNewAds = newAds.querySelector('.popup__title');
-    var addressNewAds = newAds.querySelector('.popup__text--address');
-    var pricewNewAds = newAds.querySelector('.popup__text--price');
-    var typeNewAds = newAds.querySelector('.popup__type');
-    var capacityNewAds = newAds.querySelector('.popup__text--capacity');
-    var timeNewAds = newAds.querySelector('.popup__text--time');
-    var featuresNewAds = newAds.querySelector('.popup__features');
-    var descriptionNewAds = newAds.querySelector('.popup__description');
-    var photoNewAds = newAds.querySelector('.popup__photo');
-    var photosNewAds = newAds.querySelector('.popup__photos');
-    var avatarNewAds = newAds.querySelector('.popup__avatar');
+    let newAds = templateAds.cloneNode(true);
+    let titleNewAds = newAds.querySelector('.popup__title');
+    let addressNewAds = newAds.querySelector('.popup__text--address');
+    let pricewNewAds = newAds.querySelector('.popup__text--price');
+    let typeNewAds = newAds.querySelector('.popup__type');
+    let capacityNewAds = newAds.querySelector('.popup__text--capacity');
+    let timeNewAds = newAds.querySelector('.popup__text--time');
+    let featuresNewAds = newAds.querySelector('.popup__features');
+    let descriptionNewAds = newAds.querySelector('.popup__description');
+    let photoNewAds = newAds.querySelector('.popup__photo');
+    let photosNewAds = newAds.querySelector('.popup__photos');
+    let avatarNewAds = newAds.querySelector('.popup__avatar');
     titleNewAds.textContent = ads.offer.title;
     addressNewAds.textContent = ads.offer.address;
     pricewNewAds.textContent = `${ads.offer.price} ₽/ночь`;
@@ -70,7 +70,7 @@ generateAds.forEach((ads) => {
     avatarNewAds.src = ads.author.avatar;
     photosNewAds.removeChild(photoNewAds);
     for (let i = 0; i < ads.offer.photos.length; i++) {
-        var clonePhoto = photoNewAds.cloneNode(true);
+        let clonePhoto = photoNewAds.cloneNode(true);
         clonePhoto.src = ads.offer.photos[i];
         photosNewAds.appendChild(clonePhoto);
     };
