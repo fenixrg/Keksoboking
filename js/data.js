@@ -55,8 +55,6 @@ for (let i = 1; i <= ADS; i++) {
 
 }
 
-console.log(AVATARS);
-
 //Основная Функция - Генерация массива из 10 объектов - объявлений
 const createAds = (array) => {
     let x = getRandomIntegerPoint(35.65000, 35.70000, 5);
@@ -89,4 +87,4 @@ for (let i = 0; i < ADS; i++) {
     createAds(generateAds);
 }
 
-export { generateAds }
+export { generateAds };

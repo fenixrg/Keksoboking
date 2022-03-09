@@ -1,17 +1,89 @@
-import { test } from './generate-similar-ads.js';
-import { changeTypeHouse, changeTimeIn, changeTimeOut, controlPrice } from './user-dialog.js';
+import { createInteractivMap, disabledPage } from "./map.js";
+import {
+    changeTypeHouse,
+    changeTimeIn,
+    changeTimeOut,
+    controlPrice,
+} from "./user-dialog.js";
+import {
+    validationCheckTitleAds,
+    validationCheckPricewAds,
+    validationCheckCountRoomsGuestsAds,
+} from "./validation-form.js";
 
+// Отключение диалоговых окон
+// disabledPage();
 
-const infoAds = document.querySelector('.ad-form');
-console.log(infoAds);
-const interactiveElementsDialogForm = infoAds.children;
-console.log(interactiveElementsDialogForm);
-const mapFilter = document.querySelector('.map__filters');
-const mapFilterElements = mapFilter.children;
+// Генерация карты
 
-// Добавление тестового DOM-элеемента в канвас
-// const canvas = document.querySelector('#map-canvas');
-// canvas.appendChild(test[0]);
+function testMode() {
+    document.querySelector("#title").value =
+        "Заполните все обязательные поля, назначьте цену, загрузите аватар и фото жилья. Придумайте интересное описание. Оно сделает объявление более живым и привлекательным. Получившееся объявление должно давать гостям полное представление о вашем жилье.";
+    document.querySelector("#price").value = 10000;
+}
+
+testMode();
+
+try {
+    createInteractivMap();
+} catch (error) {
+    disabledPage();
+    console.log("Error:", error.message, error.stack);
+}
+
+const userDialogForm = document.querySelector(".ad-form");
+const messageSuccessTemplate = document.querySelector("#success").content;
+const messageSuccess = messageSuccessTemplate.querySelector(".success");
+const messageErrorTemplate = document.querySelector("#error").content;
+const messageError = messageErrorTemplate.querySelector(".error");
+
+console.log(messageError);
+
+userDialogForm.addEventListener("submit", (evt) => {
+    evt.preventDefault();
+    const formData = new FormData(evt.target);
+    fetch("https://23.javascript.pages.academy/keksobookin", {
+        method: "POST",
+        body: formData,
+    }).then((response) => {
+        if (response.ok) {
+            evt.target.reset();
+            document.querySelector(".map__filters").reset();
+
+            document.body.insertAdjacentElement("beforeend", messageSuccess);
+            const successButton = document.querySelector(".success__button");
+            successButton.addEventListener("click", () => {
+                document.body.removeChild(messageSuccess);
+            });
+            document.addEventListener("click", () => {
+                document.body.removeChild(messageSuccess);
+            });
+            document.addEventListener("keydown", (evt) => {
+                if (evt.keyCode == 27) {
+                    document.body.removeChild(messageSuccess);
+                }
+            });
+        } else {
+            document.body.insertAdjacentElement("beforeend", messageError);
+
+            const errorButton = document.querySelector(".error__button");
+            errorButton.addEventListener("click", () => {
+                document.body.removeChild(messageError);
+            });
+            document.addEventListener("click", () => {
+                document.body.removeChild(messageError);
+            });
+            document.addEventListener("keydown", (evt) => {
+                if (evt.keyCode == 27) {
+                    document.body.removeChild(messageError);
+                }
+            });
+        }
+    });
+});
+
+// Включение диалоговых окон
+// enabledPage();
 
 // Запуск события изменения типа жилья
 changeTypeHouse();
@@ -23,82 +95,13 @@ controlPrice();
 changeTimeIn();
 changeTimeOut();
 
+// В А Л И Д А Ц И Я
 
-// Отключение диалоговых окон
-const disabledPage = () => {
-    infoAds.classList.add('ad-form--disabled');
-    for (let i = 0; i < interactiveElementsDialogForm.length; i++) {
-        interactiveElementsDialogForm[i].setAttribute('disabled', true);
-    }
-    mapFilter.classList.add('.ad-form--disabled');
-    for (let i = 0; i < mapFilterElements.length; i++) {
-        mapFilterElements[i].setAttribute('disabled', true);
-    }
-};
+// Валидация заголовка объявления
+validationCheckTitleAds();
 
-// Включение диалоговых окон
-const enabledPage = () => {
-    infoAds.classList.remove('ad-form--disabled');
-    for (let i = 0; i < interactiveElementsDialogForm.length; i++) {
-        interactiveElementsDialogForm[i].removeAttribute('disabled');
-    }
-    mapFilter.classList.remove('.ad-form--disabled');
-    for (let i = 0; i < mapFilterElements.length; i++) {
-        mapFilterElements[i].removeAttribute('disabled');
-    }
-};
+// Валидация цены жилья
+validationCheckPricewAds();
 
-
-
-disabledPage();
-// Интерактивная карта
-const map = L.map('map-canvas').on('load', () => {
-        console.log('Карта инициализирована');
-        enabledPage();
-    })
-    .setView({
-        lat: 35.6895,
-        lng: 139.692,
-    }, 10);
-
-// Поставщик карт
-const layerMap = L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
-);
-
-// Иконка маркера
-const mainPinIcon = L.icon({
-    iconUrl: 'img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
-});
-
-// Маркер
-const marker = L.marker({
-    lat: 35.6895,
-    lng: 139.692,
-}, {
-    draggable: true,
-    icon: mainPinIcon,
-}, );
-
-let endCoordintelat;
-let endCoordintelng;
-let addressForm = document.querySelector('#address');
-console.log(addressForm);
-
-// Получение конечных координат при отпуске маркера
-marker.on('moveend', (evt) => {
-    let endCoordinte = evt.target.getLatLng();
-    endCoordintelat = endCoordinte.lat;
-    endCoordintelng = endCoordinte.lng;
-    addressForm.value = `x = ${endCoordintelat}, y =${endCoordintelng}`;
-});
-
-// Добавление карт от поставщика и маркеров на карту
-layerMap.addTo(map);
-marker.addTo(map);
-
-// marker.remove();
+// Валидация количества комнат/количества гостей
+validationCheckCountRoomsGuestsAds();
